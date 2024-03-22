@@ -1,10 +1,6 @@
 <nav class="navbar navbar-light">
     <div class="navbar-left">
         <div class="logo-area">
-            <a class="navbar-brand" href="/en/dashboards/demo-one">
-                <img class="dark" src="{{ asset('assets/img/canopy.png') }}" alt="svg">
-                <img class="light" src="{{ asset('assets/img/canopy.png') }}" alt="img">
-            </a>
             <a href="#" class="sidebar-toggle">
                 <img class="svg" src="{{ asset('assets/img/svg/align-center-alt.svg') }}" alt="img"></a>
         </div>
@@ -13,7 +9,7 @@
         <ul class="navbar-right__menu">
             <li class="nav-author">
                 <div class="dropdown-custom">
-                    <a href="javascript:;" class="nav-item-toggle"><img src="{{ asset('assets/img/favicon.png') }}" alt="" class="rounded-circle">
+                    <a href="javascript:" class="nav-item-toggle"><img src="{{ asset('assets/img/favicon.png') }}" alt="" class="rounded-circle">
                             <span class="nav-item__title">{{ session('sessionFullName') }}<i class="las la-angle-down nav-item__arrow"></i></span>
                     </a>
                     <div class="dropdown-wrapper">

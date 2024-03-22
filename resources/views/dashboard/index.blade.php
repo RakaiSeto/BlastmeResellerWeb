@@ -1,6 +1,36 @@
 @section('title',$title)
 @section('description',$description)
 @extends('layout.app')
+@push('js')
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+    <script>
+
+        $(document).ready(function() {
+            var socket = io('http://38.47.64.53:4011');
+
+            socket.on('connection', function (socket) {
+                console.log("connc");
+            });
+
+            socket.on('message', function(msg) {
+                $('#data_logs').append($('<li class="list-group-item">').text(msg));
+            });
+
+            socket.on('qr', function(src) {
+                $('#qrcode').attr('src', src);
+                $('#qrcode').show();
+            });
+
+            socket.on('ready', function(data) {
+                $('#qrcode').hide();
+            });
+
+            socket.on('authenticated', function(data) {
+                $('#qrcode').hide();
+            });
+        });
+    </script>
+@endpush
 @section('content')
 <div class="crm mb-25">
     <div class="container-fluid">
@@ -18,6 +48,13 @@
                     </div>
                 </div>
             </div>
+            <img src="" alt="QR Code" id="qrcode" class="img-fluid">
+            <p>Engine Logs : </p>
+            <ul class="list-group" id="data_logs">
+                <!--<li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Cras justo odio</li>-->
+                <li class="list-group-item">Menghubungkan Whatsapp Web ......</li></ul>
             @include('components.dashboard.demo_one.overview_cards')
             @include('components.dashboard.demo_one.sales_report')
             @include('components.dashboard.demo_one.sales_growth')

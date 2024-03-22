@@ -1,12 +1,24 @@
 <div class="sidebar__menu-group">
     <ul class="sidebar_nav">
-        <li class="has-child {{ Request::is(app()->getLocale().'/applications/user/*') ? 'open':'' }}">
-            <a href="#" class="{{ Request::is(app()->getLocale().'/applications/user/*') ? 'active':'' }}">
-                <span class="nav-icon uil uil-users-alt"></span>
-                <span class="menu-text">{{ trans('menu.user-menu-title') }}</span>
-                <span class="toggle-icon"></span>
+        <li class="">
+            <a href="/dashboard" class="{{ Request::is(app()->getLocale().'/applications/user/*') ? 'active':'' }}">
+                <span class="nav-icon bi bi-speedometer"></span>
+                <span class="menu-text">Dashboard</span>
             </a>
         </li>
+        <li class="">
+            <a href="/dashboard" class="{{ Request::is(app()->getLocale().'/applications/user/*') ? 'active':'' }}">
+                <span class="nav-icon bi bi-hdd-rack"></span>
+                <span class="menu-text">Nodes</span>
+            </a>
+        </li>
+        <li class="">
+            <a href="/dashboard" class="{{ Request::is(app()->getLocale().'/applications/user/*') ? 'active':'' }}">
+                <span class="nav-icon bi bi-wallet2"></span>
+                <span class="menu-text">Balance</span>
+            </a>
+        </li>
+
         @if(Request::is(app()->getLocale().'/dashboards/demo-five'))
             <div class="card sidebar__feature shadow-none bg-transparent border-0 py-sm-50 px-sm-35 text-center">
                 <div class="px-15 mb-sm-35 mb-20">

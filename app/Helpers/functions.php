@@ -7,6 +7,8 @@
  * @return array Status
  */
 
+use Illuminate\Support\Facades\DB;
+
 const RPCAddressRootAdmin = "195.85.19.218:20020";
 const RPCAddressGlobalData = "195.85.19.218:20010";
 
@@ -35,6 +37,11 @@ function get_status_meta( $status_key = '' ) {
     }
 
     return [];
+}
+
+function validatePassword(string $email, string $password) {
+    $res = DB::select('SELECT id, phone, nama, password FROM mt_user_reseller WHERE is_active = true and email = "' . $email . '"');
+
 }
 
 /**
