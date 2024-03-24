@@ -7,15 +7,9 @@
             </a>
         </li>
         <li class="">
-            <a href="/dashboard" class="{{ Request::is(app()->getLocale().'/applications/user/*') ? 'active':'' }}">
+            <a href="/nodes" class="{{ Request::is(app()->getLocale().'/applications/user/*') ? 'active':'' }}">
                 <span class="nav-icon bi bi-hdd-rack"></span>
                 <span class="menu-text">Nodes</span>
-            </a>
-        </li>
-        <li class="">
-            <a href="/dashboard" class="{{ Request::is(app()->getLocale().'/applications/user/*') ? 'active':'' }}">
-                <span class="nav-icon bi bi-wallet2"></span>
-                <span class="menu-text">Balance</span>
             </a>
         </li>
 
