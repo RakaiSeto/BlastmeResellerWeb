@@ -22,10 +22,7 @@
 {{--                    </div>--}}
                 </div>
             </div>
-{{--            <img src="" alt="QR Code" id="qrcode" class="img-fluid">--}}
-{{--            <p>Engine Logs : </p>--}}
-{{--            <ul class="list-group" id="data_logs">--}}
-{{--                <li class="list-group-item">Menghubungkan Whatsapp Web ......</li></ul>--}}
+
             @include('components.dashboard.demo_one.overview_cards')
             @include('components.dashboard.demo_one.sales_report')
             @include('components.dashboard.demo_one.sales_growth')

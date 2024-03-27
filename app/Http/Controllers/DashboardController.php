@@ -41,9 +41,12 @@ class DashboardController extends Controller
             curl_setopt($curlHandle, CURLOPT_TIMEOUT, 3); //timeout in seconds
             $response = curl_exec($curlHandle);
             preg_match('/ \d+ /', $response, $matches);
+            $header_size = curl_getinfo($curlHandle, CURLINFO_HEADER_SIZE);
+            $body = substr($response, $header_size);
             $node->health = isset($matches[0]) ? "yes" : "no";
-
-//            error_log($response);
+            if ($matches[0] == 200) {
+                $node->is_scanned = 1;
+            }
 
             curl_close($curlHandle);
         }
