@@ -23,12 +23,13 @@
                 </div>
             </div>
 
-            @include('components.dashboard.demo_one.overview_cards')
-            @include('components.dashboard.demo_one.sales_report')
-            @include('components.dashboard.demo_one.sales_growth')
-            @include('components.dashboard.demo_one.sales_location')
-            @include('components.dashboard.demo_one.top_sale_products')
-            @include('components.dashboard.demo_one.browser_state')
+            @include('components.saldo')
+{{--            @include('components.dashboard.demo_one.overview_cards')--}}
+{{--            @include('components.dashboard.demo_one.sales_report')--}}
+{{--            @include('components.dashboard.demo_one.sales_growth')--}}
+{{--            @include('components.dashboard.demo_one.sales_location')--}}
+{{--            @include('components.dashboard.demo_one.top_sale_products')--}}
+{{--            @include('components.dashboard.demo_one.browser_state')--}}
 
         </div>
     </div>

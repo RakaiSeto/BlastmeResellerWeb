@@ -4,6 +4,7 @@
     <script>
         document.getElementById('doSignin').addEventListener('click', function(e) {
             e.preventDefault();
+            var btn = this
             this.disabled = true
 
             let xhr = new XMLHttpRequest();
@@ -24,6 +25,7 @@
                         location.replace('/dashboard');
                     } else {
                         alert(xhr.responseText)
+                        btn.disabled = false
                     }
                 }
             };

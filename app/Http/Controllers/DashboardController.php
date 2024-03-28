@@ -15,21 +15,21 @@ class DashboardController extends Controller
      */
     function index(Request $request)
     {
-        $title = "Index";
+        $title = "Dashboard";
         $description = "Some description for the page";
 
-//        $res = DB::select('SELECT * FROM mt_device WHERE reseller_user_allocation = "' . $request->session()->get('sessionEmail') . '"');
+        $res = DB::select('SELECT wallet FROM mt_user_reseller WHERE email = "' . $request->session()->get('sessionEmail') . '"');
 
-//        dd($res);
+        $harini = 0;
 
-        return view('dashboard.index', compact('title', 'description'));
+        return view('dashboard.index', compact('title', 'description'))->with('saldo', $res[0]->wallet)->with('hariini', $harini);
     }
 
     function nodes(Request $request) {
         $title = "Nodes";
         $description = "Some description for the page";
 
-        $nodes = DB::select('SELECT * FROM mt_device WHERE reseller_user_allocation = "' . $request->session()->get('sessionEmail') . '"');
+        $nodes = DB::connection('mysql')->select('SELECT * FROM mt_device WHERE reseller_user_allocation = "' . $request->session()->get('sessionEmail') . '"');
 
         foreach ($nodes as $node) {
             $curlHandle = curl_init();

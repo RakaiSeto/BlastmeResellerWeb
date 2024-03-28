@@ -8,7 +8,7 @@
     <div class="navbar-right">
         <ul class="navbar-right__menu">
             <li class="nav-author">
-                    <span class="nav-item__title">{{ session('sessionFullName') }}<a href="/logout"><i class="bi bi-power ps-1"></i></a></span>
+                    <span class="nav-item__title">{{ session('sessionName') }}<a href="/logout"><i class="bi bi-power ps-1"></i></a></span>
             </li>
         </ul>
         <div class="navbar-right__mobileAction d-md-none">

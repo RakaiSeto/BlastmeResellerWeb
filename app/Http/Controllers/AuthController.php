@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Grpc\ChannelCredentials;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Rootadminweb\DoLoginRequest;
 use Rootadminweb\DoLogoutRequest;
@@ -97,46 +99,25 @@ class AuthController extends Controller {
 
         $payloadArray = json_decode($request->getContent(), true);
 
-        $grpcRootAdminWeb = new RootAdminWebServiceClient(RPCAddressRootAdmin, ['credentials' => ChannelCredentials::createInsecure()]);
-        $grpcRequest = new DoLoginRequest();
-        $grpcRequest->setEmail($payloadArray[0]);
-        $grpcRequest->setPassword($payloadArray[1]);
+//        select all from table mt_user_reseller where email = $email mysql
+        $res = DB::connection('mysql')->select('SELECT * FROM mt_user_reseller WHERE email = "' . $payloadArray[0] . '"');
 
-        list($result, $status) = $grpcRootAdminWeb->DoLogin($grpcRequest)->wait();
+        if (password_verify($payloadArray[1], $res[0]->password)) {
+            $request->session()->put('sessionEmail', $payloadArray[0]);
+            $request->session()->put('sessionId', $res[0]->id);
+            $request->session()->put('sessionName', $res[0]->nama);
+            $request->session()->put('sessionPhone', $res[0]->phone);
 
-        $grpcHitStatus = $status->code;
+            $session = $payloadArray[0] . "|" . $res[0]->id . "|" . $res[0]->nama . "|" . $res[0]->phone;
+            $request->session()->put('sessionSignature', $session);
 
-        Log::debug('DoLogin Hit Status: ' . $grpcHitStatus);
 
-        $respStatus = $result->getStatuscode();
-        $description = $result->getDescription();
-        if ($grpcHitStatus === 0) {
-            Log::debug('DoLogin Status Hit: ' . $respStatus);
-            Log::debug('Login Status Code: ' . $respStatus);
-            if ($respStatus === '000') {
 
-                $sessionResult = $result->getResult()[0];
-
-                $request->session()->put('sessionSignature', $result->getSession());
-                $request->session()->put('sessionAccountId', $sessionResult->getId());
-                $request->session()->put('sessionRoleId', $sessionResult->getRoleid());
-                $request->session()->put('sessionEmail', $sessionResult->getEmail());
-                $request->session()->put('sessionPhone', $sessionResult->getPhone());
-                $request->session()->put('sessionFirstName', $sessionResult->getFirstname());
-                $request->session()->put('sessionLastName', $sessionResult->getLastname());
-                $request->session()->put('sessionFullName', $sessionResult->getFullname());
-                $request->session()->put('sessionClientId', $sessionResult->getClientid());
-
-                echo 'yes';
-            } else if ($respStatus === '700') {
-                echo 'Invalid Credential';
-            } else {
-                echo 'Failed Login : ' . $description . '. Please try again.';
-            }
+            echo 'yes';
         } else {
-            Log::debug('DoLogin Failed Status Hit: ' . $respStatus);
+            Log::debug('DoLogin Failed: Wrong Password');
+            echo 'wrong password';
         }
-
 
         echo '';
     }
