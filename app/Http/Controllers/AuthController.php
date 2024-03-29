@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\User;
 use Grpc\ChannelCredentials;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Rootadminweb\DoLoginRequest;
 use Rootadminweb\DoLogoutRequest;
 use Rootadminweb\RootAdminWebServiceClient;
 use Validator;
-use App\Models\User;
 
-class AuthController extends Controller {
+class AuthController extends Controller
+{
 
     /**
      * Display login of the resource.
      *
      * @return \Illuminate\View\View
      */
-    public function login(){
+    public function login()
+    {
         $title = "Login";
         $description = "Some description for the page";
-        return view('auth.login',compact('title','description'));
+        return view('auth.login', compact('title', 'description'));
     }
 
     /**
@@ -32,10 +32,11 @@ class AuthController extends Controller {
      *
      * @return \Illuminate\View\View
      */
-    public function register(){
+    public function register()
+    {
         $title = "Register";
         $description = "Some description for the page";
-        return view('auth.register',compact('title','description'));
+        return view('auth.register', compact('title', 'description'));
     }
 
     /**
@@ -43,10 +44,11 @@ class AuthController extends Controller {
      *
      * @return \Illuminate\View\View
      */
-    public function forgetPassword(){
+    public function forgetPassword()
+    {
         $title = "Forget Password";
         $description = "Some description for the page";
-        return view('auth.forget_password',compact('title','description'));
+        return view('auth.forget_password', compact('title', 'description'));
     }
 
     /**
@@ -54,22 +56,23 @@ class AuthController extends Controller {
      *
      * @return
      */
-    public function signup(Request $request){
-        $validators=Validator::make($request->all(),[
-            'name'=>'required',
-            'email'=>'required|email|unique:users',
-            'password'=>'required'
+    public function signup(Request $request)
+    {
+        $validators = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required'
         ]);
-        if($validators->fails()){
+        if ($validators->fails()) {
             return redirect()->route('register')->withErrors($validators)->withInput();
-        }else{
+        } else {
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
             $user->save();
             auth()->login($user);
-            return redirect()->intended(route('dashboard.demo_one','en'))->with('message','Registration was successfull !');
+            return redirect()->intended(route('dashboard.demo_one', 'en'))->with('message', 'Registration was successfull !');
         }
     }
 
@@ -78,23 +81,25 @@ class AuthController extends Controller {
      *
      * @return
      */
-    public function authenticate(Request $request){
-        $validators=Validator::make($request->all(),[
-            'email'=>'required|email',
-            'password'=>'required'
+    public function authenticate(Request $request)
+    {
+        $validators = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
-        if($validators->fails()){
+        if ($validators->fails()) {
             return redirect()->route('login')->withErrors($validators)->withInput();
-        }else{
-            if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
-                return redirect()->intended(route('dashboard.demo_one','en'))->with('message','Welcome back !');
-            }else{
-                return redirect()->route('login')->with('message','Login failed !Email/Password is incorrect !');
+        } else {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                return redirect()->intended(route('dashboard.demo_one', 'en'))->with('message', 'Welcome back !');
+            } else {
+                return redirect()->route('login')->with('message', 'Login failed !Email/Password is incorrect !');
             }
         }
     }
 
-    public function doLogin(Request $request){
+    public function doLogin(Request $request)
+    {
         Log::debug('DoLogin');
 
         $payloadArray = json_decode($request->getContent(), true);
@@ -102,7 +107,11 @@ class AuthController extends Controller {
 //        select all from table mt_user_reseller where email = $email mysql
         $res = DB::connection('mysql')->select('SELECT * FROM mt_user_reseller WHERE is_active = 1 AND email = "' . $payloadArray[0] . '"');
 
-        if (password_verify($payloadArray[1], $res[0]->password)) {
+        if (isset($res) == 0) {
+            Log::debug('DoLogin Failed: User Not Found');
+            echo 'user not found';
+            return;
+        } elseif (password_verify($payloadArray[1], $res[0]->password)) {
             $request->session()->put('sessionEmail', $payloadArray[0]);
             $request->session()->put('sessionId', $res[0]->id);
             $request->session()->put('sessionName', $res[0]->nama);
@@ -110,8 +119,6 @@ class AuthController extends Controller {
 
             $session = $payloadArray[0] . "|" . $res[0]->id . "|" . $res[0]->nama . "|" . $res[0]->phone;
             $request->session()->put('sessionSignature', $session);
-
-
 
             echo 'yes';
         } else {
@@ -127,7 +134,8 @@ class AuthController extends Controller {
      *
      * @return
      */
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $grpcRootAdminWeb = new RootAdminWebServiceClient(RPCAddressRootAdmin, ['credentials' => ChannelCredentials::createInsecure()]);
         $grpcRequest = new DoLogoutRequest();
         $grpcRequest->setEmail($request->session()->get('sessionEmail'));
@@ -141,6 +149,6 @@ class AuthController extends Controller {
         Log::debug('Login Status Code: ' . $respStatus);
 
         Auth::logout();
-        return redirect()->route('login')->with('error','Successfully Logged out !');
+        return redirect()->route('login')->with('error', 'Successfully Logged out !');
     }
 }
