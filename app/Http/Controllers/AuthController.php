@@ -100,7 +100,7 @@ class AuthController extends Controller {
         $payloadArray = json_decode($request->getContent(), true);
 
 //        select all from table mt_user_reseller where email = $email mysql
-        $res = DB::connection('mysql')->select('SELECT * FROM mt_user_reseller WHERE email = "' . $payloadArray[0] . '"');
+        $res = DB::connection('mysql')->select('SELECT * FROM mt_user_reseller WHERE is_active = 1 AND email = "' . $payloadArray[0] . '"');
 
         if (password_verify($payloadArray[1], $res[0]->password)) {
             $request->session()->put('sessionEmail', $payloadArray[0]);
