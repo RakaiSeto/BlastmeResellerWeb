@@ -140,8 +140,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            @foreach($nodes as $key => $node)
+                        @foreach($nodes as $key => $node)
+                            <tr>
                                 <th scope="row">{{ $key+1 }}</th>
                                 <td>
                                     @if($node->is_scanned == 1)
@@ -171,10 +171,10 @@
                                             Node</a>
                                     @endif
                                 </td>
-                        </tr>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
-                    @endforeach
                 </div>
             </div>
         </div>
