@@ -11,7 +11,7 @@
                     <div class="overview-content w-100">
                       <div class=" ap-po-details-content d-flex flex-wrap justify-content-between">
                         <div class="ap-po-details__titlebar">
-                          <h1>Rp. {{$saldo}}</h1>
+                          <h1>Rp. {{number_format($saldo - $fee/100 * $saldo)}}</h1>
                           <p>Saldo</p>
                         </div>
                         <div class="ap-po-details__icon-area">
@@ -37,7 +37,7 @@
                     <div class="overview-content w-100">
                       <div class=" ap-po-details-content d-flex flex-wrap justify-content-between">
                         <div class="ap-po-details__titlebar">
-                          <h1>Rp. {{ $hariini * 65 }}</h1>
+                          <h1>Rp. {{ $hariini * (50 - $fee/100 * 50) }}</h1>
                           <p>Penghasilan Hari Ini</p>
                         </div>
                         <div class="ap-po-details__icon-area">
