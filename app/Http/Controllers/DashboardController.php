@@ -20,7 +20,7 @@ class DashboardController extends Controller
 
         $res = DB::select('SELECT wallet, fee FROM mt_user_reseller WHERE email = "' . $request->session()->get('sessionEmail') . '"');
 
-        $harini = DB::select('SELECT count(message_id) as count FROM transaction_wa WHERE DATE(date) = CURDATE() and status = 000 and participant_email = "' . $request->session()->get('sessionEmail') . '"');
+        $harini = DB::select("SELECT count(message_id) as count FROM transaction_wa WHERE DATE(date) = CURDATE() and status = 000 and participant_email = '" . $request->session()->get('sessionEmail') . "'");
 //        dd($harini);
 
         return view('dashboard.index', compact('title', 'description'))->with('saldo', $res[0]->wallet)->with('fee', $res[0]->fee)->with('hariini', $harini[0]->count);

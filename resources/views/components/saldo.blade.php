@@ -4,10 +4,6 @@
                   <!-- Card 1  -->
                   <div class="ap-po-details ap-po-details--2 p-25 radius-xl d-flex justify-content-between">
 
-
-
-
-
                     <div class="overview-content w-100">
                       <div class=" ap-po-details-content d-flex flex-wrap justify-content-between">
                         <div class="ap-po-details__titlebar">
@@ -37,7 +33,7 @@
                     <div class="overview-content w-100">
                       <div class=" ap-po-details-content d-flex flex-wrap justify-content-between">
                         <div class="ap-po-details__titlebar">
-                          <h1>Rp. {{ $hariini * (50 - $fee/100 * 50) }}</h1>
+                          <h1>Rp. {{ number_format($hariini * (50 - $fee/100 * 50)) }}</h1>
                           <p>Penghasilan Hari Ini</p>
                         </div>
                         <div class="ap-po-details__icon-area">

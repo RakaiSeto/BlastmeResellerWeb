@@ -15,6 +15,35 @@
                     var url = $(this).data('url');
                     //     get data-node-id from button
                     var node_id = $(this).data('node-id');
+                    node_id = node_id + ""
+                    console.log("the node id : " + node_id)
+
+                    var real_node_id = node_id.slice(-2)
+                    if(real_node_id[0] == 0) {
+                        real_node_id = real_node_id.slice(1)
+                    }
+
+                    var server_id = $(this).data('nama')
+                    server_id = server_id + ""
+                    server_id = server_id.substring(0, 2);
+
+                    the_url = "http://res-" + server_id + ".krapoex.com:1212/xstartnode/n" + real_node_id;
+                    console.log(the_url)
+
+                    fetch(the_url, {
+                        method: 'GET',
+                    //     solve the no cors issue
+                        mode: 'no-cors',
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Headers': '*',
+                            'Access-Control-Allow-Methods': '*',
+                        },
+                    }).then(response => {
+                        console.log(response)
+                    }).catch(error => {
+                        console.log(error)
+                    })
 
                     // add class 'show' to modal with id 'scan + node_id'
                     $('#scan' + node_id).addClass('show');
@@ -165,7 +194,7 @@
                                 </td>
                                 <td>
                                     @if($node->is_scanned == 0 && $node->health == 'yes')
-                                        <a href="#" data-url="{{$node->url_socket}}" data-node-id="{{$node->id_device}}"
+                                        <a href="#" data-url="{{$node->url_socket}}" data-nama="{{$node->nama}}" data-node-id="{{$node->id_device}}"
                                            class="btn btn-sm btn-info flex-1 btn-scan"
                                            style="font-size: 14px; padding: 0 6.64px; line-height: normal; height: 20px">Scan
                                             Node</a>
