@@ -12,7 +12,6 @@
         "laravel/framework": "^9.52",
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
-        "ext-grpc": "*",
       "ext-curl": "*"
     },
     "require-dev": {
