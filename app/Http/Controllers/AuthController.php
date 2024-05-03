@@ -135,18 +135,6 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $grpcRootAdminWeb = new RootAdminWebServiceClient(RPCAddressRootAdmin, ['credentials' => ChannelCredentials::createInsecure()]);
-        $grpcRequest = new DoLogoutRequest();
-        $grpcRequest->setEmail($request->session()->get('sessionEmail'));
-
-        list($result, $status) = $grpcRootAdminWeb->DoLogout($grpcRequest)->wait();
-
-        $grpcHitStatus = $status->code;
-
-        Log::debug('DoLogout Hit Status: ' . $grpcHitStatus);
-        $respStatus = $result->getStatuscode();
-        Log::debug('Login Status Code: ' . $respStatus);
-
         Auth::logout();
         return redirect()->route('login')->with('error', 'Successfully Logged out !');
     }
